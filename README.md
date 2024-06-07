@@ -1,4 +1,4 @@
-### Rethinking Evaluation Strategy for Temporal Link Prediction through Counterfactual Analysis
+## Rethinking Evaluation Strategy for Temporal Link Prediction through Counterfactual Analysis
 Aniq Ur Rahman, Alexander Modell, Justin P. Coon
 
 In response to critiques of existing evaluation methods for Temporal Link Prediction (TLP) models, we propose a novel approach to verify if these models truly capture temporal patterns in the data. Our method involves a sanity check formulated as a counterfactual question: 

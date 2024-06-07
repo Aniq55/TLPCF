@@ -1,6 +1,5 @@
 import sys
-sys.path.append("/home/chri6578/Documents/gttp/") 
-from src.utils import *
+sys.path.append("/home/chri6578/Documents/TLPCF/") 
 import matplotlib.pyplot as plt 
 import seaborn as sns
 sns.set_theme()
@@ -8,6 +7,7 @@ from tqdm import tqdm
 import pandas as pd
 import copy
 import argparse
+import numpy as np 
 
 parser = argparse.ArgumentParser(description="Intensify.")
 parser.add_argument('-d', '--dataset', type=str, help='The directory path')
@@ -21,7 +21,8 @@ dataset = args.dataset
 m = args.m
 sample = args.sample
 
-DF = pd.read_csv(f"/home/chri6578/Documents/gttp/data/{dataset}/ml_{dataset}.csv")   
+DATA_DIR = "/home/chri6578/Documents/TLPCF/data"
+DF = pd.read_csv(f"{DATA_DIR}/{dataset}/ml_{dataset}.csv")   
 
 test_time_start = {
     "reddit": 2261813.658,
@@ -39,7 +40,6 @@ test_time_start = {
     "UNtrade": 883612800
 }
 
-
 DF_test_orig = DF[DF['ts'] > test_time_start[dataset]]
 
 lambda_orig = len(DF_test_orig)/(DF_test_orig['ts'].max() - DF_test_orig['ts'].min())
@@ -56,7 +56,7 @@ for i in range(m):
 DF_list = [DF_all[i] for i in range(m)]
 union_df = pd.concat(DF_list, ignore_index=True)
 
-X = np.load(f"/home/chri6578/Documents/gttp/data/{dataset}/ml_{dataset}.npy")
+X = np.load(f"{DATA_DIR}/{dataset}/ml_{dataset}.npy")
 X_trainval = X[:1+len(DF)-len(DF_test_orig)]
 X_test = X[1+len(DF)-len(DF_test_orig):]
 
@@ -69,18 +69,13 @@ for j, idx in enumerate(test_new_df['idx']):
 
 X_new = np.vstack([X_trainval, X_test_new])
 
-np.save(f"/home/chri6578/Documents/gttp/data/{dataset}/intense_{m}_{sample}_ml_{dataset}.npy", X_new)
+np.save(f"{DATA_DIR}/{dataset}/intense_{m}_{sample}_ml_{dataset}.npy", X_new)
 
 DF_trainval = DF[DF['ts'] <= test_time_start[dataset]]
 DF_new = pd.concat([DF_trainval, test_new_df ], ignore_index=True)
-
-
 DF_new.reset_index(drop=True, inplace=True)
 
 DF_new['Unnamed: 0'] = DF_new.index
 DF_new['idx'] = DF_new.index + 1
 
-DF_new.to_csv(f"/home/chri6578/Documents/gttp/data/{dataset}/intense_{m}_{sample}_ml_{dataset}.csv", index=False)
-
-
-
+DF_new.to_csv(f"{DATA_DIR}/{dataset}/intense_{m}_{sample}_ml_{dataset}.csv", index=False)
