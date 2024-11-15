@@ -20,7 +20,7 @@ args = parser.parse_args()
 dataset = args.dataset
 sample = args.sample
 
-DATA_DIR = "/home/chri6578/Documents/TLPCF/data"
+DATA_DIR = "/home/chri6578/Documents/gttp/data"
 DF = pd.read_csv(f"{DATA_DIR}/{dataset}/ml_{dataset}.csv")   
 
 test_time_start = {
